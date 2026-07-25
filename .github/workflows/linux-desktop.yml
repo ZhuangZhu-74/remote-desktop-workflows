@@ -76,8 +76,8 @@ jobs:
 
       - name: debug use ssh and rdp
         run: |
-          nohup cloudflared tunnel --url tcp://localhost:22 --metries localhost:9091 &
-          nohup cloudflared tunnel --url tcp://localhost:3389 --metries localhost:9092 &
+          nohup cloudflared tunnel --url tcp://localhost:22 --metrics localhost:9091 &
+          nohup cloudflared tunnel --url tcp://localhost:3389 --metrics localhost:9092 &
           sleep 15
 
       - name: Keep Alive
