@@ -35,6 +35,15 @@ jobs:
           
           # Configure XRDP to use GNOME
           echo "gnome-session" > ~/.xsession
+
+          realpath ~/.xsession
+          echo "gnome-session" > /home/runner/.xsession
+          chown runner:runner /home/runner/.xsession
+          echo "gnome-session" > /home/runner/.xsessionrc
+          chown runner:runner /home/runner/.xsessionrc
+          ls -l /home/runner/.xsession*
+          cat -n /home/runner/.xsession*
+          
           sudo sed -i 's/3389/3389/g' /etc/xrdp/xrdp.ini
           sudo systemctl enable xrdp
           sudo service xrdp start
