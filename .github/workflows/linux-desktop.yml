@@ -73,7 +73,7 @@ jobs:
       - name: Start Cloudflare Tunnel
         uses: AnimMouse/setup-cloudflared/tunnel@v2
         with:
-          url: http://localhost:3389  # xrdp 默认端口
+          url: tcp://localhost:3389  # xrdp default port
 
       - name: Keep Alive
         run: sleep 21600
