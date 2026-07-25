@@ -1,4 +1,4 @@
-name: RICH LINUX (SMART GNOME) - FIXED
+name: RICH LINUX (XFCE) - FIXED
 
 on:
   workflow_dispatch:
@@ -12,18 +12,16 @@ jobs:
       - name: Setup cloudflared
         uses: AnimMouse/setup-cloudflared@v2
 
-      - name: Smart GNOME Install (No Bloat)
+      - name: Install xfce
         run: |
           sudo apt-get update
           
           # Remove heavy tools that cause hangs
           sudo apt-get remove -y --purge man-db firewalld ufw || true
-          
-          # Install ONLY the GUI parts of GNOME (Skipping Kernel/System updates)
-          # Using --no-install-recommends to speed up drastically
+
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-            gnome-session gnome-shell gnome-terminal nautilus \
-            dbus-x11 x11-xserver-utils xorg \
+            xfce4 xfce4-goodies \
+            nautilus dbus-x11 x11-xserver-utils xorg \
             adwaita-icon-theme-full fonts-cantarell
           
           echo "✅ GUI Installed (Lightweight Mode)"
@@ -33,17 +31,12 @@ jobs:
           sudo apt-get install -y --no-install-recommends xrdp
           sudo adduser xrdp ssl-cert
           
-          # Configure XRDP to use GNOME
-          echo "gnome-session" > ~/.xsession
+          # Configure XRDP to use xfce
+          echo "xfce-session" > ~/.xsession
 
-          realpath ~/.xsession
-          echo "gnome-session" > /home/runner/.xsession
-          chown runner:runner /home/runner/.xsession
-          echo "gnome-session" > /home/runner/.xsessionrc
-          chown runner:runner /home/runner/.xsessionrc
-          ls -l /home/runner/.xsession*
-          cat -n /home/runner/.xsession*
-          
+          sudo sed -i '1iunset DBUS_SESSION_BUS_ADDRESS\nunset XDG_RUNTIME_DIR
+            \nexec startxfce4\n' /ext/xrdp/startwm.sh
+            
           sudo sed -i 's/3389/3389/g' /etc/xrdp/xrdp.ini
           sudo systemctl enable xrdp
           sudo service xrdp start
