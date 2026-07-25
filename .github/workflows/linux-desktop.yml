@@ -33,9 +33,6 @@ jobs:
           
           # Configure XRDP to use xfce
           echo "xfce-session" > ~/.xsession
-
-          sudo sed -i '1iunset DBUS_SESSION_BUS_ADDRESS\nunset XDG_RUNTIME_DIR\
-            \nexec startxfce4\n' /ext/xrdp/startwm.sh
             
           sudo sed -i 's/3389/3389/g' /etc/xrdp/xrdp.ini
           sudo systemctl enable xrdp
