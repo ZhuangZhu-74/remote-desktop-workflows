@@ -69,10 +69,16 @@ jobs:
           echo "runner:Antigravity2026!" | sudo chpasswd
           sudo usermod -aG sudo runner
 
-      - name: Start Cloudflare Tunnel
-        uses: AnimMouse/setup-cloudflared/tunnel@v2
-        with:
-          url: tcp://localhost:3389  # xrdp default port
+      #- name: Start Cloudflare Tunnel
+      #  uses: AnimMouse/setup-cloudflared/tunnel@v2
+      #  with:
+      #    url: tcp://localhost:3389  # xrdp default port
+
+      - name: debug use ssh and rdp
+        run: |
+          nohup cloudflared tunnel --url tcp://localhost:22 --metries localhost:9091 &
+          nohup cloudflared tunnel --url tcp://localhost:3389 --metries localhost:9092 &
+          sleep 15
 
       - name: Keep Alive
         run: sleep 21600
